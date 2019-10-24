@@ -1,5 +1,6 @@
 'use strict'
 
+const Helpers = use('Helpers')
 const Seller = use("App/Models/Seller")
 
 class SellerController {
@@ -51,6 +52,22 @@ class SellerController {
         seller.address_id = bodyParser.addressId
         seller.user_id = auth.user.user_id
 
+        const image = request.file('image', {
+            types: ['image'],
+            size: '2mb'
+        })
+
+        seller.image_url = `${Date.now()}-${image.clientName}`
+
+        await image.move(Helpers.publicPath('uploads/images'), {
+            name: seller.image_url,
+            overwrite: true
+        })
+
+        if (!image.movedAll()) {
+            return image.errors()
+        }
+
         await seller.save()
 
         return response.status(201).json({
@@ -85,6 +102,22 @@ class SellerController {
         seller.active = 1
         seller.address_id = bodyParser.addressId
 
+        const image = request.file('image', {
+            types: ['image'],
+            size: '2mb'
+        })
+
+        seller.image_url = new Date().getTime() + '-' + image.clientName;
+
+        await image.move(Helpers.publicPath('uploads/images'), {
+            name: seller.image_url,
+            overwrite: true
+        })
+
+        if (!image.moved()) {
+            return image.errors()
+        }
+
         await seller.save()
 
         return response.json({
@@ -116,6 +149,35 @@ class SellerController {
         await seller.delete()
     }
 
+    async popular({ response }) {
+        const seller = await Seller.all()
+
+        return response.json({
+            "status": "success",
+            "message": "",
+            "data": seller
+        })
+    }
+
+    async offers({ response }) {
+        const seller = await Seller.all()
+
+        return response.json({
+            "status": "success",
+            "message": "",
+            "data": seller
+        })
+    }
+
+    async news({ response }) {
+        const seller = await Seller.all()
+
+        return response.json({
+            "status": "success",
+            "message": "",
+            "data": seller
+        })
+    }
 }
 
 module.exports = SellerController

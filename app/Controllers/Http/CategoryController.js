@@ -33,32 +33,6 @@ class CategoryController {
         })
     }
 
-    /**
-   * Create/save a new image.
-   * POST images
-   */
-    async store({ params, request }) {
-        const images = request.file('image', {
-            types: ['image'],
-            size: '2mb'
-        })
-
-        await images.moveAll(Helpers.tmpPath('uploads'), file => ({
-            name: `${Date.now()}-${file.clientName}`,
-            overwrite: true
-        }))
-
-        if (!images.movedAll()) {
-            return images.errors()
-        }
-
-        /*await Promise.all(
-            images
-                .movedList()
-                .map(image => property.images().create({ path: image.fileName }))
-        )*/
-    }
-
     async create({ request, response }) {
 
         const bodyParser = request.all()
@@ -68,6 +42,22 @@ class CategoryController {
         category.description = bodyParser.description
         category.sort_order = bodyParser.sortOrder
         category.active = 1
+
+        const image = request.file('image', {
+            types: ['image'],
+            size: '2mb'
+        })
+
+        category.image_url = `${Date.now()}-${image.clientName}`
+
+        await image.move(Helpers.publicPath('uploads/images'), {
+            name: category.image_url,
+            overwrite: true
+        })
+
+        if (!image.moved()) {
+            return image.errors()
+        }
 
         await category.save()
 
@@ -94,6 +84,22 @@ class CategoryController {
         category.description = bodyParser.description
         category.sort_order = bodyParser.sortOrder
         category.active = 1
+
+        const image = request.file('image', {
+            types: ['image'],
+            size: '2mb'
+        })
+
+        category.image_url = `${Date.now()}-${image.clientName}`
+
+        await image.move(Helpers.publicPath('uploads/images'), {
+            name: category.image_url,
+            overwrite: true
+        })
+
+        if (!image.moved()) {
+            return image.errors()
+        }
 
         await category.save()
 

@@ -1,5 +1,6 @@
 'use strict'
 
+const Helpers = use('Helpers')
 const Product = use("App/Models/Product")
 
 class ProductController {
@@ -45,6 +46,22 @@ class ProductController {
         product.addtional_info = bodyParser.addtionalInfo
         product.url = "produto/"
         product.active = 1
+        
+        const image = request.file('image', {
+            types: ['image'],
+            size: '2mb'
+        })
+
+        product.image_url = `${Date.now()}-${image.clientName}`
+
+        await image.move(Helpers.publicPath('uploads/images'), {
+            name: product.image_url,
+            overwrite: true
+        })
+
+        if (!image.moved()) {
+            return image.errors()
+        }
 
         await product.save()
 
@@ -75,6 +92,22 @@ class ProductController {
         product.addtional_info = bodyParser.maxDeliveryDistance
         product.url = bodyParser.minOrder
         product.active = 1
+
+        const image = request.file('image', {
+            types: ['image'],
+            size: '2mb'
+        })
+
+        product.image_url = `${Date.now()}-${image.clientName}`
+
+        await image.move(Helpers.publicPath('uploads/images'), {
+            name: product.image_url,
+            overwrite: true
+        })
+
+        if (!image.moved()) {
+            return image.errors()
+        }
 
         await product.save()
 

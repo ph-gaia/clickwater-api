@@ -4,11 +4,7 @@
 /** @type {typeof import('@adonisjs/framework/src/Route/Manager')} */
 const Route = use('Route')
 
-Route.get('/', () => {
-  return { greeting: 'Hello dear, in developmenting' }
-})
-
-Route.post('/login', 'UserController.login').prefix('api/v1');
+Route.post('/login', 'UserController.login').prefix('api/v1')
 Route.post('/users', 'UserController.create')
 
 // route users
@@ -22,19 +18,22 @@ Route.group(() => {
 // route address
 Route.group(() => {
   Route.get('/address', 'AddressController.findAll')
-  Route.get('/address/:id', 'AddressController.findById')
+  Route.get('/address/:id([0-9]+)', 'AddressController.findById')
   Route.post('/address', 'AddressController.create')
-  Route.put('/address/:id', 'AddressController.update')
-  Route.delete('/address/:id', 'AddressController.destroy')
+  Route.put('/address/:id([0-9]+)', 'AddressController.update')
+  Route.delete('/address/:id([0-9]+)', 'AddressController.destroy')
 }).prefix('api/v1').middleware('auth')
 
 // route seller
 Route.group(() => {
   Route.get('/seller', 'SellerController.findAll')
-  Route.get('/seller/:id', 'SellerController.findById')
+  Route.get('/seller/:id([0-9]+)', 'SellerController.findById')
   Route.post('/seller', 'SellerController.create')
-  Route.put('/seller/:id', 'SellerController.update')
-  Route.delete('/seller/:id', 'SellerController.destroy')
+  Route.put('/seller/:id([0-9]+)', 'SellerController.update')
+  Route.delete('/seller/:id([0-9]+)', 'SellerController.destroy')
+  Route.get('/seller/popular', 'SellerController.popular')
+  Route.get('/seller/offers', 'SellerController.offers')
+  Route.get('/seller/news', 'SellerController.news')
 }).prefix('api/v1').middleware('auth')
 
 // route product
