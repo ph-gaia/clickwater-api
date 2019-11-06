@@ -5,7 +5,7 @@
 const Route = use('Route')
 
 Route.post('/login', 'UserController.login').prefix('api/v1')
-Route.post('/users', 'UserController.create')
+Route.post('/users', 'UserController.create').prefix('api/v1')
 
 // route users
 Route.group(() => {
@@ -34,7 +34,7 @@ Route.group(() => {
   Route.get('/seller/popular', 'SellerController.popular')
   Route.get('/seller/offers', 'SellerController.offers')
   Route.get('/seller/news', 'SellerController.news')
-}).prefix('api/v1').middleware('auth')
+}).prefix('api/v1')
 
 // route product
 Route.group(() => {
@@ -43,7 +43,7 @@ Route.group(() => {
   Route.post('/product', 'ProductController.create')
   Route.put('/product/:id', 'ProductController.update')
   Route.delete('/product/:id', 'ProductController.destroy')
-}).prefix('api/v1').middleware('auth')
+}).prefix('api/v1')
 
 // route brand
 Route.group(() => {
@@ -71,3 +71,10 @@ Route.post('/orders', 'OrderController.create')
 Route.put('/orders/:id', 'OrderController.update')
 Route.delete('/orders/:id', 'OrderController.destroy')
 
+// route credit card
+Route.group(() => {
+  Route.get('/payments', 'CreditCardController.findAll')
+  Route.get('/payments/:id([0-9]+)', 'CreditCardController.findById')
+  Route.post('/payments', 'CreditCardController.create')
+  Route.delete('/payments/:id([0-9]+)', 'CreditCardController.destroy')
+}).prefix('api/v1').middleware('auth')
