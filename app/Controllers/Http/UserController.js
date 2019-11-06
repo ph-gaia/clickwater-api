@@ -59,15 +59,19 @@ class UserController {
         })
     }
 
-    async login({ request, auth }) {
+    async login({ request, auth, response }) {
         const { username, password } = request.all()
 
         const token = await auth.attempt(username, password)
 
-        return ({
+        const infoAuth = await Authentication.findBy('username', username)
+        const user = await User.find(infoAuth.user_id)
+        const result = Object.assign(user, { "token" : token.token });
+
+        return response.json({
             "status": "success",
             "message": "User Autorized",
-            "data": token
+            "data": result
         })
     }
 
