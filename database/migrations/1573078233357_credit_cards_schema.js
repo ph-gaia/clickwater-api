@@ -14,7 +14,7 @@ class CreditCardsSchema extends Schema {
         .inTable('users')
         .onUpdate('NO ACTION')
         .onDelete('NO ACTION')
-      table.string('number', 16).notNullable().unique()
+      table.string('number', 20).notNullable().unique()
       table.string('enterprise', 20).notNullable()
       table.string('owner_full_name', 60).notNullable()
       table.string('owner_reg_number', 11).notNullable()
