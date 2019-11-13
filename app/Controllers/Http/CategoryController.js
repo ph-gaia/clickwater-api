@@ -43,22 +43,6 @@ class CategoryController {
         category.sort_order = bodyParser.sortOrder
         category.active = 1
 
-        const image = request.file('image', {
-            types: ['image'],
-            size: '2mb'
-        })
-
-        category.image_url = `${Date.now()}-${image.clientName}`
-
-        await image.move(Helpers.publicPath('uploads/images'), {
-            name: category.image_url,
-            overwrite: true
-        })
-
-        if (!image.moved()) {
-            return image.errors()
-        }
-
         await category.save()
 
         return response.status(201).json({

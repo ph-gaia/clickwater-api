@@ -52,21 +52,21 @@ class SellerController {
         seller.address_id = bodyParser.addressId
         seller.user_id = auth.user.user_id
 
-        const image = request.file('image', {
-            types: ['image'],
-            size: '2mb'
-        })
+        // const image = request.file('image', {
+        //     types: ['image'],
+        //     size: '2mb'
+        // })
 
-        seller.image_url = `${Date.now()}-${image.clientName}`
+        // seller.image_url = `${Date.now()}-${image.clientName}`
 
-        await image.move(Helpers.publicPath('uploads/images'), {
-            name: seller.image_url,
-            overwrite: true
-        })
+        // await image.move(Helpers.publicPath('uploads/images'), {
+        //     name: seller.image_url,
+        //     overwrite: true
+        // })
 
-        if (!image.movedAll()) {
-            return image.errors()
-        }
+        // if (!image.movedAll()) {
+        //     return image.errors()
+        // }
 
         await seller.save()
 

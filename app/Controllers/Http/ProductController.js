@@ -52,15 +52,17 @@ class ProductController {
             size: '2mb'
         })
 
-        product.image_url = `${Date.now()}-${image.clientName}`
+        if (!image) {
+            product.image_url = `${Date.now()}-${image.clientName}`
 
-        await image.move(Helpers.publicPath('uploads/images'), {
-            name: product.image_url,
-            overwrite: true
-        })
+            await image.move(Helpers.publicPath('uploads/images'), {
+                name: product.image_url,
+                overwrite: true
+            })
 
-        if (!image.moved()) {
-            return image.errors()
+            if (!image.moved()) {
+                return image.errors()
+            }
         }
 
         await product.save()

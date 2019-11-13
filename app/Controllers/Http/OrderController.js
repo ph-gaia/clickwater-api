@@ -1,7 +1,7 @@
 'use strict'
 
 const Order = use("App/Models/Order")
-const OrderItens = use("App/Models/OrderIten")
+const OrderItem = use("App/Models/OrderItem")
 
 class OrderController {
 
@@ -50,7 +50,6 @@ class OrderController {
         order.address_id = bodyParser.address_id
         order.status_id = 1 // ACCEPTED
         order.delivery_tax = bodyParser.delivery_tax
-        order.not_avaiable_amount = bodyParser.not_avaiable_amount
         order.total_amount = bodyParser.total_amount
         order.amount_payable = bodyParser.amount_payable
         order.requested_delivery_time = bodyParser.requested_delivery_time
@@ -58,18 +57,18 @@ class OrderController {
         await order.save()
 
         bodyParser.products.forEach(element => {
-            const orderItens = new OrderItens()
+            const itens = new OrderItem()
 
-            orderItens.order_id = order.id
-            orderItens.product_id = element.product_id
-            orderItens.name = element.name
-            orderItens.brand = element.brand
-            orderItens.price = element.price
-            orderItens.discount = element.discount
-            orderItens.quantity = element.quantity
-            orderItens.order_count = 50
-    
-            await orderItens.save() 
+            itens.order_id = order.id
+            itens.product_id = element.product_id
+            itens.name = element.name
+            itens.brand = element.brand
+            itens.price = element.price
+            itens.discount = element.discount
+            itens.quantity = element.quantity
+            itens.order_count = 8
+
+            itens.save()
         });
 
         return response.json({
