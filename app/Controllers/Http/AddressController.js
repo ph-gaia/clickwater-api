@@ -5,7 +5,7 @@ const Address = use("App/Models/Address")
 class AddressController {
 
     async findAll({ auth, response }) {
-        const address = await Address.findBy("user_id", auth.user.user_id)
+        const address = await Address.query().where("user_id", auth.user.user_id).fetch()
 
         if (!address) {
             return response.status(401).json({
