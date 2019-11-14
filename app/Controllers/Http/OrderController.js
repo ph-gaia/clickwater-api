@@ -2,11 +2,24 @@
 
 const Order = use("App/Models/Order")
 const OrderItem = use("App/Models/OrderItem")
+const User = use("App/Models/User")
+const Seller = use("App/Models/Seller")
+const Address = use("App/Models/Address")
 
 class OrderController {
 
     async findAll({ auth, response }) {
-        const order = await Order.query().where("user_id", auth.user.user_id).fetch()
+        const order = await Order.query().where("orders.user_id", auth.user.user_id).fetch()
+        
+        var result = [];
+        order.forEach(function(element) {
+            const user = User.find(element.user_id)
+            const seller = Seller.find(element.seller_id)
+            const address = Address.find(params.id)
+
+            result = {"user" : user, "seller" : seller, "address" : address};
+            element.push(result);
+        });
 
         if (!order) {
             return response.status(401).json({
